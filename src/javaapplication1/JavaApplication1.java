@@ -1,29 +1,30 @@
 package javaapplication1;
 
-public class JavaApplication1 {
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
-    public static void main(String[] args) {
+public class JavaApplication1 {
+    private static String pathname;
+
+    public static void main(String[] args) throws FileNotFoundException {
         
         Histogram<String> histograma = new Histogram<>();
-        histograma.increment("gmail.com");
-        histograma.increment("gmail.com");
-        histograma.increment("gmail.com");
-        histograma.increment("gmail.com");
-        
-        histograma.increment("ulpgc.es");
-        histograma.increment("ulpgc.es");
-        histograma.increment("ulpgc.es");
-        histograma.increment("ulpgc.es");
-        histograma.increment("ulpgc.es");
-        histograma.increment("ulpgc.es");
-        histograma.increment("ulpgc.es");
-        
-        histograma.increment("hotmail.com");
-        histograma.increment("hotmail.com");
-        histograma.increment("hotmail.com");
-        histograma.increment("hotmail.com");
-        histograma.increment("hotmail.com");
-        
+        String pathName = "C:\\Users\\usuario\\Documents\\NetBeansProjects\\JavaApplication1\\emails.txt";
+        try {
+            BufferedReader fileIn = new BufferedReader(new FileReader(pathName));
+            String mail;
+            while((mail=fileIn.readLine()) != null) {
+                if(!mail.contains("@"))
+                    continue;
+                histograma.increment(mail.split("@")[1]);
+            }
+                
+                
+        } catch (Exception e) {
+            System.out.println("El fichero no existe " + e);
+        }
+    
         HistogramDisplay histo = new HistogramDisplay(histograma);
         histo.execute();
     }
